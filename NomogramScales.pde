@@ -81,7 +81,7 @@ class NomogramScales
         float x = s.equ.evalX(u, delta, mu);
         float y = s.equ.evalY(u, delta, mu);
 
-        ticks.add(new Tick(new PVector(x, y), nfc(u, 0)));
+        ticks.add(new Tick(new PVector(x, y), nfc(u, s.digits)));
       }
 
       ticksUVW.add(ticks);
@@ -121,8 +121,7 @@ class NomogramScales
     stroke(0);
     fill(0);
     smooth();
-    textSize(10);
-    textAlign(RIGHT, CENTER);
+
 
     // axis
     for (int i=0; i<pointsUVW.size (); i++)
@@ -140,6 +139,9 @@ class NomogramScales
     }
 
     // major ticks incl. values
+    
+    textSize(10);
+    textAlign(RIGHT, CENTER);
     for (int i=0; i<ticksUVW.size (); i++)
     {
       ArrayList<Tick> ticks = ticksUVW.get(i);
@@ -154,7 +156,11 @@ class NomogramScales
         text(t.l, p.x-15, p.y);
       }
     }
+    
+    // lables on scales
 
+    textSize(10);
+    textAlign(CENTER, CENTER);
     for (int i=0; i<scalesUVW.size (); i++)
     {
       Scale s = scalesUVW.get(i);
@@ -164,7 +170,7 @@ class NomogramScales
       text(s.name, p1.x, p1.y+15);
 
       PVector p2 = mc2wc(pts.get(pts.size()-1));
-      text(s.unit, p2.x, p2.y-15);
+      text("["+s.unit+"]", p2.x, p2.y-15);
     }
   }
 }

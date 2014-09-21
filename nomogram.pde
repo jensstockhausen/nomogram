@@ -12,7 +12,7 @@ void setup()
   ArrayList<Scale> scales = new ArrayList<Scale>();
 
   scales.add(new Scale(
-  "U", "X", 0.0, 10000.0, 400.0, "%6.0f", 
+  "Antenna Height", "feet", 0.0, 10000.0, 400.0, 0, 
   new Equation() 
   {
     public float evalX(float u, float delta, float mu) { 
@@ -25,7 +25,7 @@ void setup()
   ));
 
   scales.add(new Scale(
-  "V", "X", 0.0, 250.0, 30.0, "%6.0f", 
+  "Distance", "miles", 0.0, 250.0, 30.0, 0, 
   new Equation() 
   {
     public float evalX(float u, float delta, float mu) { 
@@ -38,7 +38,7 @@ void setup()
   ));
 
   scales.add(new Scale(
-  "U", "X", 0.0, 10000.0, 400.0, "%6.0f", 
+  "Object Height", "feet", 0.0, 10000.0, 400.0, 0, 
   new Equation() 
   {
     public float evalX(float u, float delta, float mu) { 
