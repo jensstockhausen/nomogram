@@ -1,12 +1,19 @@
 
+interface Crossing
+{
+  public float evalV(float u, float v);
+}
+
 class Tick
 {
   PVector p;
+  PVector n;
   String l;
 
-  Tick(PVector p, String label)
+  Tick(PVector p, PVector n, String label)
   {
     this.p = p;
+    this.n = n;
     this.l = label;
   }
 }
@@ -15,9 +22,10 @@ class Tick
 class NomogramScales
 {
   ArrayList<Scale> scalesUVW;
+  Crossing crossing;
 
   float delta;
-  float mu;
+  float mu1, mu2, mu3;
 
   float xMin, xMax;
   float yMin, yMax;
@@ -28,17 +36,36 @@ class NomogramScales
   ArrayList<ArrayList<PVector>> pointsUVW;
   ArrayList<ArrayList<Tick>> ticksUVW;
 
-  NomogramScales(ArrayList<Scale> scalesUVW, float delta, float mu, float border)
+  NomogramScales(ArrayList<Scale> scalesUVW, Crossing crossing, float delta, float mu1, float mu2, float mu3, float border)
   {
     this.scalesUVW = scalesUVW;
+    this.crossing = crossing;
     this.delta = delta;
-    this.mu    = mu;
+    this.mu1    = mu1;
+    this.mu2    = mu2;
+    this.mu3    = mu3;
 
     this.border = border; 
     pointsUVW = new ArrayList<ArrayList<PVector>>();
     ticksUVW  = new ArrayList<ArrayList<Tick>>();
 
     calc();
+  }
+
+  NomogramScales(ArrayList<Scale> scalesUVW, Crossing crossing, float delta, float mu, float border)
+  {
+    this.scalesUVW = scalesUVW;
+    this.crossing = crossing;
+    this.delta = delta;
+    this.mu1    = mu;
+    this.mu2    = mu;
+    this.mu3    = mu;
+
+    this.border = border; 
+    pointsUVW = new ArrayList<ArrayList<PVector>>();
+    ticksUVW  = new ArrayList<ArrayList<Tick>>();
+
+    calc();  
   }
 
 
@@ -49,7 +76,7 @@ class NomogramScales
     yMin = +10000; 
     yMax = -10000;
 
-    for (int i=0; i<scalesUVW.size (); i++)
+    for (int i=0; i<scalesUVW.size(); i++)
     {
       Scale s = scalesUVW.get(i);
 
@@ -60,8 +87,8 @@ class NomogramScales
 
       for (float u = s.uMin; u <= s.uMax; u += step)
       {
-        float x = s.equ.evalX(u, delta, mu);
-        float y = s.equ.evalY(u, delta, mu);
+        float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
+        float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
 
         if (x<=xMin) xMin = x;
         if (x>=xMax) xMax = x;
@@ -78,10 +105,17 @@ class NomogramScales
 
       for (float u = s.uMin; u<= s.uMax; u += s.uStep)
       {
-        float x = s.equ.evalX(u, delta, mu);
-        float y = s.equ.evalY(u, delta, mu);
+        float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
+        float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
 
-        ticks.add(new Tick(new PVector(x, y), nfc(u, s.digits)));
+        float xn = s.equ.evalX(u-s.uStep, delta, mu1, mu2, mu3);
+        float yn = s.equ.evalY(u-s.uStep, delta, mu1, mu2, mu3);
+        
+        PVector n = new PVector((y-yn), (x-xn));
+        
+        n.normalize();
+
+        ticks.add(new Tick(new PVector(x, y), n, nfc(u, s.digits)));
       }
 
       ticksUVW.add(ticks);
@@ -109,8 +143,8 @@ class NomogramScales
   {
     Scale s = scalesUVW.get(i);
     
-    float x = s.equ.evalX(u, delta, mu);
-    float y = s.equ.evalY(u, delta, mu);
+    float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
+    float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
   
     return mc2wc(new PVector(x,y));
   }
@@ -151,9 +185,16 @@ class NomogramScales
         Tick t = ticks.get(j);
 
         PVector p = mc2wc(t.p);
+        PVector n = new PVector(t.n.x, t.n.y);
+        n.mult(5);
+        
+        PVector pp = new PVector(p.x, p.y);
+        pp.sub(n);
 
-        line(p.x, p.y, p.x-5, p.y);
-        text(t.l, p.x-15, p.y);
+        line(p.x, p.y, pp.x, pp.y);
+        
+        pp.sub(n);
+        text(t.l, pp.x, pp.y);
       }
     }
     
@@ -161,16 +202,28 @@ class NomogramScales
 
     textSize(10);
     textAlign(CENTER, CENTER);
-    for (int i=0; i<scalesUVW.size (); i++)
+    
+    for (int i=0; i<scalesUVW.size(); i++)
     {
       Scale s = scalesUVW.get(i);
       ArrayList<PVector> pts = pointsUVW.get(i);
 
       PVector p1 = mc2wc(pts.get(0));
-      text(s.name, p1.x, p1.y+15);
-
       PVector p2 = mc2wc(pts.get(pts.size()-1));
-      text("["+s.unit+"]", p2.x, p2.y-15);
+      
+      float offset = 20;
+
+      if (p1.y < p2.y)
+      {
+        text(s.name, p2.x, p2.y+offset);
+        text("["+s.unit+"]", p1.x, p1.y-offset);      
+      }     
+      else
+      {
+        text(s.name, p1.x, p1.y+offset);
+        text("["+s.unit+"]", p2.x, p2.y-offset);      
+      }
+      
     }
   }
 }
