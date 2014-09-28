@@ -72,7 +72,7 @@ class NomogramScales
 
       for (float u = s.uMin; u <= s.uMax; u += step)
       {
-        PVector p = det.eval(i, u, delta, mu1, mu2, mu3);
+        PVector p = det.ev(i, u, delta, mu1, mu2, mu3);
         
         float x = p.x;
         float y = p.y;
@@ -86,26 +86,31 @@ class NomogramScales
       }
 
       pointsUVW.add(points);
-      
+
       // points for drawing the ticks
       ArrayList<Tick> ticks = new ArrayList<Tick>();
-
+   
       for (float u = s.uMin; u<= s.uMax; u += s.uStep)
       {
-        PVector p  = det.eval(i, u, delta, mu1, mu2, mu3);
+        PVector p  = det.ev(i, u, delta, mu1, mu2, mu3);
         
-        PVector n  = det.eval(i, u+s.uStep, delta, mu1, mu2, mu3);
-        PVector pp = det.eval(i, u-s.uStep, delta, mu1, mu2, mu3);
+        PVector n  = det.ev(i, u+s.uStep, delta, mu1, mu2, mu3);
+        PVector pp = det.ev(i, u-s.uStep, delta, mu1, mu2, mu3);
+        
         
         n.sub(pp);
-        n.rotate(HALF_PI);
         n.normalize();
+        n.set(-n.y, n.x);
 
         ticks.add(new Tick(p, n, nfc(u, s.digits)));
       }
 
       ticksUVW.add(ticks);
+      
+      
+      
     }
+    
 
     if ( (xMax-xMin)/width > (yMax-yMin)/height )
     {
@@ -128,7 +133,7 @@ class NomogramScales
 
   public PVector value2wc(float value, int i)
   {
-    return mc2wc( det.eval(i, value, delta, mu1, mu2, mu3) );
+    return mc2wc( det.ev(i, value, delta, mu1, mu2, mu3) );
   }
 
 

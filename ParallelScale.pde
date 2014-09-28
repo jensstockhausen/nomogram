@@ -1,7 +1,7 @@
 
 class ParallelScale extends Determinant
 {
-  ParallelScale(Function fu, Function fv, Function fw)
+  ParallelScale(Func fu, Func fv, Func fw)
   {
     super(fu,fv,fw);
   }
@@ -11,7 +11,7 @@ class ParallelScale extends Determinant
     float x,y; 
     
     x = -delta; 
-    y = mu1 * fu.eval(u); 
+    y = mu1 * fu.ev(u); 
     
     return new PVector(x,y);
   };
@@ -21,7 +21,7 @@ class ParallelScale extends Determinant
     float x,y;
     
     x = 0;
-    y = ((mu1*mu3)/(mu1+mu3)) * fv.eval(v);
+    y = ((mu1*mu3)/(mu1+mu3)) * fv.ev(v);
         
     return new PVector(x,y);
   };
@@ -31,7 +31,7 @@ class ParallelScale extends Determinant
     float x,y; 
     
     x = delta;
-    y = mu3 * fw.eval(w);
+    y = mu3 * fw.ev(w);
     
     return new PVector(x,y);
   };
@@ -39,7 +39,7 @@ class ParallelScale extends Determinant
   
   public float crossing(float u, float w)
   {
-    return fu.eval(u) + fw.eval(w);
+    return fu.ev(u) + fw.ev(w);
   }
   
 }

@@ -4,35 +4,37 @@
 * basic interface for all nomogramfunctions
 */
 
+/*
 interface Equation 
 {
   public float evalX(float u, float delta, float mu1, float mu2, float mu3);
   public float evalY(float u, float delta, float mu1, float mu2, float mu3);
 }
+*/
 
-interface Function
+interface Func
 {
-  public float eval(float value);
+  public float ev(float value);
 }
 
-abstract class Determinant
+class Determinant
 {
-  Function fu,fv,fw;
+  Func fu,fv,fw;
   
-  Determinant(Function fu, Function fv, Function fw)
+  Determinant(Func fu, Func fv, Func fw)
   {
     this.fu = fu;
     this.fv = fv;
     this.fw = fw;
   }
 
-  public abstract PVector evalU(float u, float delta, float mu1, float mu2, float mu3);
-  public abstract PVector evalV(float v, float delta, float mu1, float mu2, float mu3);
-  public abstract PVector evalW(float w, float delta, float mu1, float mu2, float mu3);
+  public PVector evalU(float u, float delta, float mu1, float mu2, float mu3) { return new PVector(); };
+  public PVector evalV(float v, float delta, float mu1, float mu2, float mu3) { return new PVector(); };
+  public PVector evalW(float w, float delta, float mu1, float mu2, float mu3) { return new PVector(); };
   
-  public abstract float crossing(float u, float w);
+  public float crossing(float u, float w) { return 0.0; };
 
-  public PVector eval(int scaleNr, float value, float delta, float mu1, float mu2, float mu3)
+  public PVector ev(int scaleNr, float value, float delta, float mu1, float mu2, float mu3)
   {
     switch (scaleNr)
     {

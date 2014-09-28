@@ -1,7 +1,7 @@
 
 class NScale extends Determinant
 {
-  NScale(Function fu, Function fv, Function fw)
+  NScale(Func fu, Func fv, Func fw)
   {
     super(fu,fv,fw);
   }
@@ -11,7 +11,7 @@ class NScale extends Determinant
     float x,y; 
     
     x = 0; 
-    y = mu1 * fu.eval(u); 
+    y = mu1 * fu.ev(u); 
     
     return new PVector(x,y);
   };
@@ -20,7 +20,7 @@ class NScale extends Determinant
   {
     float x,y;
     
-    x = (delta * mu1 * (fv.eval(v)/(fv.eval(v)+1.0)))/((mu1-mu3)*(fv.eval(v)/(fv.eval(v)+1.0)) + mu3);
+    x = (delta * mu1 * (fv.ev(v)/(fv.ev(v)+1.0)))/((mu1-mu3)*(fv.ev(v)/(fv.ev(v)+1.0)) + mu3);
     y = 0.0 + (x * mu2);
         
     return new PVector(x,y);
@@ -31,7 +31,7 @@ class NScale extends Determinant
     float x,y; 
     
     x = delta;
-    y = -mu3 * fw.eval(w) + (x * mu2);
+    y = -mu3 * fw.ev(w) + (x * mu2);
     
     return new PVector(x,y);
   };
@@ -39,7 +39,7 @@ class NScale extends Determinant
   
   public float crossing(float u, float w)
   {
-    return fu.eval(u) + fw.eval(w);
+    return fu.ev(u) + fw.ev(w);
   }
   
 }
