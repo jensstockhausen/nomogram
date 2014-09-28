@@ -1,7 +1,7 @@
 
-class ParallelScale extends Determinant
+class NScale extends Determinant
 {
-  ParallelScale(Function fu, Function fv, Function fw)
+  NScale(Function fu, Function fv, Function fw)
   {
     super(fu,fv,fw);
   }
@@ -10,7 +10,7 @@ class ParallelScale extends Determinant
   {
     float x,y; 
     
-    x = -delta; 
+    x = 0; 
     y = mu1 * fu.eval(u); 
     
     return new PVector(x,y);
@@ -20,8 +20,8 @@ class ParallelScale extends Determinant
   {
     float x,y;
     
-    x = 0;
-    y = ((mu1*mu3)/(mu1+mu3)) * fv.eval(v);
+    x = (delta * mu1 * (fv.eval(v)/(fv.eval(v)+1.0)))/((mu1-mu3)*(fv.eval(v)/(fv.eval(v)+1.0)) + mu3);
+    y = 0.0 + (x * mu2);
         
     return new PVector(x,y);
   };
@@ -31,7 +31,7 @@ class ParallelScale extends Determinant
     float x,y; 
     
     x = delta;
-    y = mu3 * fw.eval(w);
+    y = -mu3 * fw.eval(w) + (x * mu2);
     
     return new PVector(x,y);
   };

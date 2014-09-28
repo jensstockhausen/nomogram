@@ -92,17 +92,24 @@ class NomogramScales
 
       for (float u = s.uMin; u<= s.uMax; u += s.uStep)
       {
-        float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
-        float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
+        PVector p = det.eval(i, u, delta, mu1, mu2, mu3);
+        
+        //float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
+        //float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
 
-        float xn = s.equ.evalX(u-s.uStep, delta, mu1, mu2, mu3);
-        float yn = s.equ.evalY(u-s.uStep, delta, mu1, mu2, mu3);
+        PVector pp = det.eval(i, u+s.uStep, delta, mu1, mu2, mu3);
+
+        //float xn = s.equ.evalX(u-s.uStep, delta, mu1, mu2, mu3);
+        //float yn = s.equ.evalY(u-s.uStep, delta, mu1, mu2, mu3);
         
-        PVector n = new PVector((y-yn), (x-xn));
+        PVector n = new PVector();
         
+        n.set(p);
+        n.sub(pp);
+        n.rotate(HALF_PI);
         n.normalize();
 
-        ticks.add(new Tick(new PVector(x, y), n, nfc(u, s.digits)));
+        ticks.add(new Tick(p, n, nfc(u, s.digits)));
       }
 
       ticksUVW.add(ticks);
@@ -133,13 +140,6 @@ class NomogramScales
   public PVector value2wc(float value, int i)
   {
     return mc2wc( det.eval(i, value, delta, mu1, mu2, mu3) );
-    
-//    Scale s = scalesUVW.get(i);
-//    
-//    float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
-//    float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
-//  
-//    return mc2wc(new PVector(x,y));
   }
 
 

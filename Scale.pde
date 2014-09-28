@@ -12,11 +12,8 @@ class Scale
   
   int digits;
   
-  Equation equ;
-  
   Scale(String name, String unit, 
-        float uMin, float uMax, float uStep, int digits,
-        Equation equation)
+        float uMin, float uMax, float uStep, int digits )
   {
     this.name  = name;
     this.unit  = unit;
@@ -24,6 +21,5 @@ class Scale
     this.uMax  = uMax;
     this.uStep = uStep;
     this.digits = digits;
-    this.equ = equation;
   }
 }
