@@ -1,6 +1,3 @@
-
-
-
 class Scale
 {
   String name;

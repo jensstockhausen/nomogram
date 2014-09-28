@@ -92,19 +92,11 @@ class NomogramScales
 
       for (float u = s.uMin; u<= s.uMax; u += s.uStep)
       {
-        PVector p = det.eval(i, u, delta, mu1, mu2, mu3);
+        PVector p  = det.eval(i, u, delta, mu1, mu2, mu3);
         
-        //float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
-        //float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
-
-        PVector pp = det.eval(i, u+s.uStep, delta, mu1, mu2, mu3);
-
-        //float xn = s.equ.evalX(u-s.uStep, delta, mu1, mu2, mu3);
-        //float yn = s.equ.evalY(u-s.uStep, delta, mu1, mu2, mu3);
+        PVector n  = det.eval(i, u+s.uStep, delta, mu1, mu2, mu3);
+        PVector pp = det.eval(i, u-s.uStep, delta, mu1, mu2, mu3);
         
-        PVector n = new PVector();
-        
-        n.set(p);
         n.sub(pp);
         n.rotate(HALF_PI);
         n.normalize();
@@ -114,9 +106,6 @@ class NomogramScales
 
       ticksUVW.add(ticks);
     }
-    
-
-    
 
     if ( (xMax-xMin)/width > (yMax-yMin)/height )
     {
@@ -149,7 +138,6 @@ class NomogramScales
     fill(0);
     smooth();
 
-
     // axis
     for (int i=0; i<pointsUVW.size (); i++)
     {
@@ -180,17 +168,18 @@ class NomogramScales
       {
         Tick t = ticks.get(j);
 
-        PVector p = mc2wc(t.p);
+        PVector p = t.p;
         PVector n = new PVector(t.n.x, t.n.y);
-        n.mult(5);
+        n.mult(2*scale);
         
         PVector pp = new PVector(p.x, p.y);
-        pp.sub(n);
+        pp.add(n);
+        
+        p  = mc2wc(p);
+        PVector tEnd = mc2wc(pp);
 
-        line(p.x, p.y, pp.x, pp.y);
-        
-        pp.sub(n);
-        
+        line(p.x, p.y, tEnd.x, tEnd.y);
+
         if (p1.y < p2.y)
         {
           textAlign(LEFT, CENTER);
@@ -200,7 +189,8 @@ class NomogramScales
           textAlign(RIGHT, CENTER);
         }
         
-        
+        pp.add(n);
+        pp = mc2wc(pp);
         text(t.l, pp.x, pp.y);
       }
     }
