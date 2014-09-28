@@ -17,7 +17,8 @@ void setup()
 
   NomogamCreator nomogramCreator = new NomogamCreator();  
  
-  nomogram = nomogramCreator.create("ohms_law");
+  //nomogram = nomogramCreator.create("ohms_law");
+  nomogram = nomogramCreator.create("earth_curve");
   
   isopleth = new Isopleth(nomogram);
 }

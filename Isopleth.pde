@@ -41,17 +41,17 @@ class Isopleth
 
   void updateLine()
   {
-    v = scales.crossing.evalV(u,w);
+    //v = scales.crossing.evalV(u,w);
     
     PVector pu = scales.value2wc(u, 0);
-    PVector pv = scales.value2wc(v, 1);
+    //PVector pv = scales.value2wc(v, 1);
     PVector pw = scales.value2wc(w, 2);
 
     x1 = pu.x;
     y1 = pu.y;
 
-    x2 = pv.x;
-    y2 = pv.y;
+    //x2 = pv.x;
+    //y2 = pv.y;
     
     x3 = pw.x;
     y3 = pw.y;

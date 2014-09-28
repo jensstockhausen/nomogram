@@ -22,7 +22,7 @@ class Tick
 class NomogramScales
 {
   ArrayList<Scale> scalesUVW;
-  Crossing crossing;
+  Determinant det;
 
   float delta;
   float mu1, mu2, mu3;
@@ -36,10 +36,11 @@ class NomogramScales
   ArrayList<ArrayList<PVector>> pointsUVW;
   ArrayList<ArrayList<Tick>> ticksUVW;
 
-  NomogramScales(ArrayList<Scale> scalesUVW, Crossing crossing, float delta, float mu1, float mu2, float mu3, float border)
+  NomogramScales(ArrayList<Scale> scalesUVW, Determinant det, float delta, float mu1, float mu2, float mu3, float border)
   {
     this.scalesUVW = scalesUVW;
-    this.crossing = crossing;
+    this.det = det;
+    
     this.delta = delta;
     this.mu1    = mu1;
     this.mu2    = mu2;
@@ -50,22 +51,6 @@ class NomogramScales
     ticksUVW  = new ArrayList<ArrayList<Tick>>();
 
     calc();
-  }
-
-  NomogramScales(ArrayList<Scale> scalesUVW, Crossing crossing, float delta, float mu, float border)
-  {
-    this.scalesUVW = scalesUVW;
-    this.crossing = crossing;
-    this.delta = delta;
-    this.mu1    = mu;
-    this.mu2    = mu;
-    this.mu3    = mu;
-
-    this.border = border; 
-    pointsUVW = new ArrayList<ArrayList<PVector>>();
-    ticksUVW  = new ArrayList<ArrayList<Tick>>();
-
-    calc();  
   }
 
 
@@ -87,15 +72,17 @@ class NomogramScales
 
       for (float u = s.uMin; u <= s.uMax; u += step)
       {
-        float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
-        float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
+        PVector p = det.eval(i, u, delta, mu1, mu2, mu3);
+        
+        float x = p.x;
+        float y = p.y;
 
         if (x<=xMin) xMin = x;
         if (x>=xMax) xMax = x;
         if (y<=yMin) yMin = y;
         if (y>=yMax) yMax = y;
 
-        points.add(new PVector(x, y));
+        points.add(p);
       }
 
       pointsUVW.add(points);
@@ -120,11 +107,15 @@ class NomogramScales
 
       ticksUVW.add(ticks);
     }
+    
+
+    
 
     if ( (xMax-xMin)/width > (yMax-yMin)/height )
     {
       scale = (width - 2*border)/(xMax-xMin);
-    } else
+    } 
+    else
     {
       scale = (height - 2*border)/(yMax-yMin);
     }
@@ -139,14 +130,16 @@ class NomogramScales
   }
 
 
-  public PVector value2wc(float u, int i)
+  public PVector value2wc(float value, int i)
   {
-    Scale s = scalesUVW.get(i);
+    return mc2wc( det.eval(i, value, delta, mu1, mu2, mu3) );
     
-    float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
-    float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
-  
-    return mc2wc(new PVector(x,y));
+//    Scale s = scalesUVW.get(i);
+//    
+//    float x = s.equ.evalX(u, delta, mu1, mu2, mu3);
+//    float y = s.equ.evalY(u, delta, mu1, mu2, mu3);
+//  
+//    return mc2wc(new PVector(x,y));
   }
 
 
@@ -175,10 +168,13 @@ class NomogramScales
     // major ticks incl. values
     
     textSize(10);
-    textAlign(RIGHT, CENTER);
+    
     for (int i=0; i<ticksUVW.size (); i++)
     {
       ArrayList<Tick> ticks = ticksUVW.get(i);
+
+      PVector p1 = mc2wc(pointsUVW.get(i).get(0));
+      PVector p2 = mc2wc(pointsUVW.get(i).get(pointsUVW.get(i).size()-1));
 
       for ( int j=0; j<ticks.size (); j++)
       {
@@ -194,6 +190,17 @@ class NomogramScales
         line(p.x, p.y, pp.x, pp.y);
         
         pp.sub(n);
+        
+        if (p1.y < p2.y)
+        {
+          textAlign(LEFT, CENTER);
+        }
+        else
+        {
+          textAlign(RIGHT, CENTER);
+        }
+        
+        
         text(t.l, pp.x, pp.y);
       }
     }

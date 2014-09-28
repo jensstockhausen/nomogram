@@ -1,9 +1,4 @@
 
-interface Equation 
-{
-  public float evalX(float u, float delta, float mu1, float mu2, float mu3);
-  public float evalY(float u, float delta, float mu1, float mu2, float mu3);
-}
 
 
 class Scale

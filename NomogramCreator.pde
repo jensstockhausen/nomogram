@@ -64,15 +64,36 @@ class NomogamCreator
     }
     ));
 
-    Crossing crossing = new Crossing()
-    {
-      public float evalV(float u, float w)
+    Determinant det = new ParallelScale(
+      new Function() 
+      { 
+        public float eval(float u) 
+        { 
+          return 1.22 * sqrt(u); 
+        }; 
+      },
+      new Function() 
+      { 
+        public float eval(float v) 
+        { 
+          return v; 
+        };
+      },
+      new Function()
       {
-        return (1.22 * sqrt(u) + sqrt( w/0.672));
+        public float eval(float w) 
+        { 
+          return sqrt( w / 0.672); 
+        }
       }
-    };
+    );
 
-    return new NomogramScales(scales, crossing, 500, 8, 60);
+    float delta = 120;
+    float mu1   = 2;
+    float mu2   = mu1;
+    float mu3   = mu2;
+ 
+    return new NomogramScales(scales, det, delta, mu1, mu2, mu3, 60);
   }
 
   public NomogramScales createOhmsLaw()
@@ -93,7 +114,7 @@ class NomogamCreator
     ));
 
     scales.add(new Scale(
-    "Current", "mA", 2.0, 100.0, 5.0, 0, 
+    "Current", "mA", 2.0, 50.0, 5.0, 0, 
     new Equation() 
     {
       public float evalX(float v, float delta, float mu1, float mu2, float mu3) { 
@@ -122,13 +143,38 @@ class NomogamCreator
     ));
 
 
-    Crossing crossing = new Crossing()
-    {
-      public float evalV(float u, float w)
+//    Crossing crossing = new Crossing()
+//    {
+//      public float evalV(float u, float w)
+//      {
+//        return u/w * 1000;
+//      }
+//    };
+    
+      Determinant det = new ParallelScale(
+      new Function() 
+      { 
+        public float eval(float u) 
+        { 
+          return 1.22 * sqrt(u); 
+        }; 
+      },
+      new Function() 
+      { 
+        public float eval(float v) 
+        { 
+          return v; 
+        };
+      },
+      new Function()
       {
-        return u/w * 1000;
+        public float eval(float w) 
+        { 
+          return sqrt( w / 0.672); 
+        }
       }
-    };
+    );
+  
 
     float delta = 900;
     float mu1   = 100;
@@ -137,7 +183,7 @@ class NomogamCreator
     
     dumpValues(scales, delta, mu1, mu2, mu3);
 
-    return new NomogramScales(scales, crossing,  delta, mu1, mu2, mu3, 60);
+    return new NomogramScales(scales, det, delta, mu1, mu2, mu3, 60);
   }
 
 
