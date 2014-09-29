@@ -1,11 +1,11 @@
 
+NomogamCreator nomogramCreator;
 NomogramScales nomogram;
 Isopleth isopleth;
 
 boolean dragging;
 boolean moveU;
 float yOffset;
-
 
 void setup()
 {
@@ -15,11 +15,10 @@ void setup()
   dragging = false;
   moveU = true;
 
-  NomogamCreator nomogramCreator = new NomogamCreator();  
+  nomogramCreator = new NomogamCreator();  
  
   //nomogram = nomogramCreator.create("earth_curve");
   nomogram = nomogramCreator.create("ohms_law");
-  
   isopleth = new Isopleth(nomogram);
 }
 
@@ -63,4 +62,17 @@ void keyPressed()
   {
     moveU = !moveU;
   }
+  
+  if (key == 'o')
+  {
+    nomogram = nomogramCreator.create("ohms_law");
+    isopleth = new Isopleth(nomogram);
+  }
+  
+  if (key == 'e')
+  {
+    nomogram = nomogramCreator.create("earth_curve");
+    isopleth = new Isopleth(nomogram);
+  }
+  
 }

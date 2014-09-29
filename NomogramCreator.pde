@@ -36,7 +36,7 @@ class NomogamCreator
   { 
     ArrayList<Scale> scales = new ArrayList<Scale>();
     
-    scales.add(new Scale("Volage",       "V",   2.0,   12.0,  1.0, 0));
+    scales.add(new Scale("Volage",       "V",   2.0,   12.5,  1.0, 0));
     scales.add(new Scale("Current",     "mA",   2.0,   50.0,  5.0, 0));
     scales.add(new Scale("Resistance", "ohm",  50.0, 1000.0, 50.0, 0));
 

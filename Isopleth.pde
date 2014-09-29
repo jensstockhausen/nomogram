@@ -73,13 +73,13 @@ class Isopleth
       if (w<wMin) w = wMin;
       if (w>wMax) w = wMax;
     }
+    
     updateLine();
   }
 
   void doDraw(boolean moveU)
   {
     updateLine();
-
     stroke(250,0,0);
 
     line(x1, y1, x3, y3);
@@ -103,9 +103,9 @@ class Isopleth
         pu = pu1;
       }
       
-      line (pu.x, pu.y,     pu.x-5, pu.y-5);
-      line (pu.x-5, pu.y-5, pu.x+5, pu.y-5);
-      line (pu.x+5, pu.y-5, pu.x, pu.y);
+      line (pu.x,   pu.y-3, pu.x-5, pu.y-7);
+      line (pu.x-5, pu.y-7, pu.x+5, pu.y-7);
+      line (pu.x+5, pu.y-7, pu.x,   pu.y-3);
     }
     else
     {
@@ -117,9 +117,9 @@ class Isopleth
         pw = pw1;
       }
       
-      line (pw.x, pw.y,     pw.x-5, pw.y-5);
-      line (pw.x-5, pw.y-5, pw.x+5, pw.y-5);
-      line (pw.x+5, pw.y-5, pw.x, pw.y);
+      line (pw.x,   pw.y-3, pw.x-5, pw.y-7);
+      line (pw.x-5, pw.y-7, pw.x+5, pw.y-7);
+      line (pw.x+5, pw.y-7, pw.x,   pw.y-3);
     }
     
     

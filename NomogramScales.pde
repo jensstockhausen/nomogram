@@ -35,6 +35,7 @@ class NomogramScales
 
   ArrayList<ArrayList<PVector>> pointsUVW;
   ArrayList<ArrayList<Tick>> ticksUVW;
+  ArrayList<ArrayList<Tick>> ticksSub;
 
   NomogramScales(ArrayList<Scale> scalesUVW, Determinant det, float delta, float mu1, float mu2, float mu3, float border)
   {
@@ -49,6 +50,7 @@ class NomogramScales
     this.border = border; 
     pointsUVW = new ArrayList<ArrayList<PVector>>();
     ticksUVW  = new ArrayList<ArrayList<Tick>>();
+    ticksSub  = new ArrayList<ArrayList<Tick>>();
 
     calc();
   }
@@ -87,30 +89,44 @@ class NomogramScales
 
       pointsUVW.add(points);
 
-      // points for drawing the ticks
-      ArrayList<Tick> ticks = new ArrayList<Tick>();
+      // points for drawing the ticks Main and Sub
+      ArrayList<Tick> ticksM = new ArrayList<Tick>();
+      ArrayList<Tick> ticksS = new ArrayList<Tick>();
    
-      for (float u = s.uMin; u<= s.uMax; u += s.uStep)
+      for (float u = s.uMin; u<=s.uMax; u += s.uStep)
       {
         PVector p  = det.ev(i, u, delta, mu1, mu2, mu3);
         
         PVector n  = det.ev(i, u+s.uStep, delta, mu1, mu2, mu3);
         PVector pp = det.ev(i, u-s.uStep, delta, mu1, mu2, mu3);
-        
-        
+ 
         n.sub(pp);
         n.normalize();
         n.set(-n.y, n.x);
 
-        ticks.add(new Tick(p, n, nfc(u, s.digits)));
+        ticksM.add(new Tick(p, n, nfc(u, s.digits)));
+        
+        for (float uu = u; ((uu<u+s.uStep)&&(uu<s.uMax)); uu += s.uStep/10.0)
+        {
+          PVector p_s  = det.ev(i, uu, delta, mu1, mu2, mu3);
+        
+          PVector n_s  = det.ev(i, uu+s.uStep/10, delta, mu1, mu2, mu3);
+          PVector pp_s = det.ev(i, uu-s.uStep/10, delta, mu1, mu2, mu3);    
+       
+          n_s.sub(pp_s);
+          n_s.normalize();
+          n_s.set(-n_s.y, n_s.x);
+          
+          ticksS.add(new Tick(p_s, n_s, ""));
+        }
+        
+        
       }
-
-      ticksUVW.add(ticks);
       
-      
+      ticksUVW.add(ticksM);
+      ticksSub.add(ticksS);
       
     }
-    
 
     if ( (xMax-xMin)/width > (yMax-yMin)/height )
     {
@@ -120,6 +136,7 @@ class NomogramScales
     {
       scale = (height - 2*border)/(yMax-yMin);
     }
+    
   }
 
 
@@ -159,23 +176,40 @@ class NomogramScales
     }
 
     // major ticks incl. values
-    
     textSize(10);
     
     for (int i=0; i<ticksUVW.size (); i++)
     {
-      ArrayList<Tick> ticks = ticksUVW.get(i);
+      ArrayList<Tick> ticks  = ticksUVW.get(i);
+      ArrayList<Tick> ticksS = ticksSub.get(i);
 
       PVector p1 = mc2wc(pointsUVW.get(i).get(0));
       PVector p2 = mc2wc(pointsUVW.get(i).get(pointsUVW.get(i).size()-1));
+      
+      for ( int j=0; j<ticksS.size(); j++)
+      {
+        Tick t = ticksS.get(j);
 
-      for ( int j=0; j<ticks.size (); j++)
+        PVector p = t.p;
+        PVector n = new PVector(t.n.x, t.n.y);
+        n.mult(4/scale);
+        
+        PVector pp = new PVector(p.x, p.y);
+        pp.add(n);
+        
+        p  = mc2wc(p);
+        PVector tEnd = mc2wc(pp);
+
+        line(p.x, p.y, tEnd.x, tEnd.y);     
+      }
+
+      for ( int j=0; j<ticks.size(); j++)
       {
         Tick t = ticks.get(j);
 
         PVector p = t.p;
         PVector n = new PVector(t.n.x, t.n.y);
-        n.mult(2*scale);
+        n.mult(8/scale);
         
         PVector pp = new PVector(p.x, p.y);
         pp.add(n);
@@ -201,7 +235,6 @@ class NomogramScales
     }
     
     // lables on scales
-
     textSize(10);
     textAlign(CENTER, CENTER);
     
