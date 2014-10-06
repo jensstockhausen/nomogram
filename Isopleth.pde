@@ -41,17 +41,17 @@ class Isopleth
 
   void updateLine()
   {
-    //v = scales.crossing.evalV(u,w);
+    v = scales.vFromUW(u, w);
     
     PVector pu = scales.value2wc(u, 0);
-    //PVector pv = scales.value2wc(v, 1);
+    PVector pv = scales.value2wc(v, 1);
     PVector pw = scales.value2wc(w, 2);
 
     x1 = pu.x;
     y1 = pu.y;
 
-    //x2 = pv.x;
-    //y2 = pv.y;
+    x2 = pv.x;
+    y2 = pv.y;
     
     x3 = pw.x;
     y3 = pw.y;
@@ -88,10 +88,7 @@ class Isopleth
     fill(0);
     ellipse(x1,y1,2,2);
     ellipse(x2,y2,2,2);
-    ellipse(x3,y3,2,2);    
-    
-    textSize(10);
-    textAlign(RIGHT, CENTER);    
+    ellipse(x3,y3,2,2);     
     
     if (moveU)
     {      
@@ -122,6 +119,12 @@ class Isopleth
       line (pw.x+5, pw.y-7, pw.x,   pw.y-3);
     }
     
+    stroke(0);
+    fill(0);
+    textSize(10);
+    textAlign(LEFT, BOTTOM);    
+    
+    text("U:" + u + " V:"+ v + " W:" + w, 10, height-10); 
     
   }
 }

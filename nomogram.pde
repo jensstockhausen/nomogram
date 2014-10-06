@@ -9,7 +9,7 @@ float yOffset;
 
 void setup()
 {
-  size(600, 600);
+  size(900, 700);
   
   yOffset = height/2;
   dragging = false;
@@ -63,13 +63,13 @@ void keyPressed()
     moveU = !moveU;
   }
   
-  if (key == 'o')
+  if (key == '1')
   {
     nomogram = nomogramCreator.create("ohms_law");
     isopleth = new Isopleth(nomogram);
   }
   
-  if (key == 'e')
+  if (key == '2')
   {
     nomogram = nomogramCreator.create("earth_curve");
     isopleth = new Isopleth(nomogram);

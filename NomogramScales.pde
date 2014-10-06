@@ -106,12 +106,12 @@ class NomogramScales
 
         ticksM.add(new Tick(p, n, nfc(u, s.digits)));
         
-        for (float uu = u; ((uu<u+s.uStep)&&(uu<s.uMax)); uu += s.uStep/10.0)
+        for (float uu = u; ((uu<u+s.uStep)&&(uu<s.uMax)); uu += s.uStep/s.uSubTicks)
         {
           PVector p_s  = det.ev(i, uu, delta, mu1, mu2, mu3);
         
-          PVector n_s  = det.ev(i, uu+s.uStep/10, delta, mu1, mu2, mu3);
-          PVector pp_s = det.ev(i, uu-s.uStep/10, delta, mu1, mu2, mu3);    
+          PVector n_s  = det.ev(i, uu+s.uStep, delta, mu1, mu2, mu3);
+          PVector pp_s = det.ev(i, uu-s.uStep, delta, mu1, mu2, mu3);    
        
           n_s.sub(pp_s);
           n_s.normalize();
@@ -143,14 +143,19 @@ class NomogramScales
   private PVector mc2wc(PVector model)
   {
     return new PVector(
-    (model.x - xMin) * scale + border, 
-    height - border - (model.y - yMin) * scale);
+      (model.x - xMin) * scale + border, 
+      height - border - (model.y - yMin) * scale  );
   }
 
 
   public PVector value2wc(float value, int i)
   {
     return mc2wc( det.ev(i, value, delta, mu1, mu2, mu3) );
+  }
+  
+  public float vFromUW(float u, float w)
+  {
+    return det.crossing(u, w);
   }
 
 
@@ -258,7 +263,8 @@ class NomogramScales
         text(s.name, p1.x, p1.y+offset);
         text("["+s.unit+"]", p2.x, p2.y-offset);      
       }
-      
     }
+
+    
   }
 }

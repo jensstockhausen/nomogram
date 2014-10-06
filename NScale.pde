@@ -39,7 +39,7 @@ class NScale extends Determinant
   
   public float crossing(float u, float w)
   {
-    return fu.ev(u) + fw.ev(w);
+    return fu.ev(u)  / ( fu.ev(u) + fw.ev(w));
   }
   
 }
