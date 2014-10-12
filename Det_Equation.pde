@@ -4,14 +4,6 @@
 * basic interface for all nomogramfunctions
 */
 
-/*
-interface Equation 
-{
-  public float evalX(float u, float delta, float mu1, float mu2, float mu3);
-  public float evalY(float u, float delta, float mu1, float mu2, float mu3);
-}
-*/
-
 interface Func
 {
   public float ev(float value);
@@ -20,12 +12,14 @@ interface Func
 class Determinant
 {
   Func fu,fv,fw;
+  Func invFv;
   
-  Determinant(Func fu, Func fv, Func fw)
+  Determinant(Func fu, Func fv, Func fw, Func invFv)
   {
     this.fu = fu;
     this.fv = fv;
     this.fw = fw;
+    this.invFv = invFv;
   }
 
   public PVector evalU(float u, float delta, float mu1, float mu2, float mu3) { return new PVector(); };

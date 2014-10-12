@@ -124,7 +124,13 @@ class Isopleth
     textSize(10);
     textAlign(LEFT, BOTTOM);    
     
-    text("U:" + u + " V:"+ v + " W:" + w, 10, height-10); 
+    String curentValues = "";
+    
+    curentValues += scales.scalesUVW.get(0).name + ":" + round(u*10.0)/10.0 + "[" +scales.scalesUVW.get(0).unit + "] ";
+    curentValues += scales.scalesUVW.get(1).name + ":" + round(v*10.0)/10.0 + "[" +scales.scalesUVW.get(1).unit + "] ";
+    curentValues += scales.scalesUVW.get(2).name + ":" + round(w*10.0)/10.0 + "[" +scales.scalesUVW.get(2).unit + "] ";
+
+    text(curentValues, 10, height - 10); 
     
   }
 }

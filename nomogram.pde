@@ -16,9 +16,8 @@ void setup()
   moveU = true;
 
   nomogramCreator = new NomogamCreator();  
- 
-  //nomogram = nomogramCreator.create("earth_curve");
-  nomogram = nomogramCreator.create("ohms_law");
+
+  nomogram = nomogramCreator.create("bmi");
   isopleth = new Isopleth(nomogram);
 }
 
