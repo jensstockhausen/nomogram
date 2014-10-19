@@ -16,8 +16,16 @@ void setup()
   moveU = true;
 
   nomogramCreator = new NomogamCreator();  
+  
+  /*
+  if (name == "earth_curve" ) return createEarthCurvature();
+  if (name == "ohms_law" )    return createOhmsLaw();
+  if (name == "bmi" )         return createBMI();
+  if (name == "resistors")    return cresteResists();
+  */
 
-  nomogram = nomogramCreator.create("bmi");
+  nomogram = nomogramCreator.create("resistors");
+  
   isopleth = new Isopleth(nomogram);
 }
 
@@ -53,25 +61,4 @@ void mouseMoved(MouseEvent mEvent)
     isopleth.move(moveU, yOffset- mouseY);
     yOffset = mouseY;
   }
-}
-
-void keyPressed()
-{
-  if (key == ' ')
-  {
-    moveU = !moveU;
-  }
-  
-  if (key == '1')
-  {
-    nomogram = nomogramCreator.create("ohms_law");
-    isopleth = new Isopleth(nomogram);
-  }
-  
-  if (key == '2')
-  {
-    nomogram = nomogramCreator.create("earth_curve");
-    isopleth = new Isopleth(nomogram);
-  }
-  
 }

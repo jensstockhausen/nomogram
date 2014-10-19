@@ -21,6 +21,8 @@ class Tick
 
 class NomogramScales
 {
+  String title;
+  
   ArrayList<Scale> scalesUVW;
   Determinant det;
 
@@ -37,8 +39,10 @@ class NomogramScales
   ArrayList<ArrayList<Tick>> ticksUVW;
   ArrayList<ArrayList<Tick>> ticksSub;
 
-  NomogramScales(ArrayList<Scale> scalesUVW, Determinant det, float delta, float mu1, float mu2, float mu3, float border)
+  NomogramScales(String title, ArrayList<Scale> scalesUVW, Determinant det, float delta, float mu1, float mu2, float mu3, float border)
   {
+    this.title = title;
+    
     this.scalesUVW = scalesUVW;
     this.det = det;
     
@@ -258,7 +262,7 @@ class NomogramScales
       PVector p1 = mc2wc(pts.get(0));
       PVector p2 = mc2wc(pts.get(pts.size()-1));
       
-      float offset = 20;
+      float offset = 25;
 
       if (p1.y < p2.y)
       {
@@ -271,7 +275,11 @@ class NomogramScales
         text("["+s.unit+"]", p2.x, p2.y-offset);      
       }
     }
-
+    
+    // title
+    textSize(24);
+    textAlign(CENTER, CENTER);       
+    text(title, width/2, 15);
     
   }
 }

@@ -8,6 +8,7 @@ class NomogamCreator
     if (name == "earth_curve" ) return createEarthCurvature();
     if (name == "ohms_law" )    return createOhmsLaw();
     if (name == "bmi" )         return createBMI();
+    if (name == "resistors")    return cresteResists();
   
     return null;
   }
@@ -32,7 +33,7 @@ class NomogamCreator
     float mu2   = mu1;
     float mu3   = mu2;
  
-    return new NomogramScales(scales, det, delta, mu1, mu2, mu3, 80);
+    return new NomogramScales("Earth Curvature",scales, det, delta, mu1, mu2, mu3, 80);
   }
 
   public NomogramScales createOhmsLaw()
@@ -55,7 +56,7 @@ class NomogamCreator
     float mu2   = 0.9;
     float mu3   = 1.5;
    
-    return new NomogramScales(scales, det, delta, mu1, mu2, mu3, 60);
+    return new NomogramScales("Ohm's Law (U=R*I)", scales, det, delta, mu1, mu2, mu3, 60);
   }
   
   
@@ -79,10 +80,31 @@ class NomogamCreator
     float mu2   = 1.9;
     float mu3   = 120.0;
    
-    return new NomogramScales(scales, det, delta, mu1, mu2, mu3, 60);
+    return new NomogramScales("Body Mass Index", scales, det, delta, mu1, mu2, mu3, 60);
   }
   
-  
+  public NomogramScales cresteResists()
+  { 
+    ArrayList<Scale> scales = new ArrayList<Scale>();
+    
+    scales.add(new Scale("R1",       "Ohm",  30.0, 200.0,  10.0, 5, 0));
+    scales.add(new Scale("R",        "Ohm",  10.0, 100.0,   5.0, 5, 0));
+    scales.add(new Scale("R2",       "Ohm",  30.0, 200.0,  10.0, 5, 0));
+
+    Determinant det = new ConcurrentScale( 
+      new Func() { public float ev(float u) { return u;    }; },
+      new Func() { public float ev(float v) { return v;    }; },
+      new Func() { public float ev(float w) { return w;    }; },
+      new Func() { public float ev(float v) { return v;    }; }
+    );
+
+    float delta = 900;
+    float mu1   = 0.0;
+    float mu2   = 0.0;
+    float mu3   = 700;
+   
+    return new NomogramScales("Parallel Resistors (1/R=1/R1+1/R2)", scales, det, delta, mu1, mu2, mu3, 60);
+  }  
   
   
 }

@@ -30,12 +30,12 @@ class Isopleth
     PVector puMax = scales.value2wc(scales.scalesUVW.get(0).uMax, 0);
     PVector puMin = scales.value2wc(scales.scalesUVW.get(0).uMin, 0);
     
-    offsetScaleU = (uMax - uMin) / (puMax.y - puMin.y);
+    offsetScaleU = (uMax - uMin) / PVector.dist(puMax, puMin);
     
     PVector pwMax = scales.value2wc(scales.scalesUVW.get(2).uMax, 2);
     PVector pwMin = scales.value2wc(scales.scalesUVW.get(2).uMin, 2);
     
-    offsetScaleW = (wMax - wMin) / (pwMax.y - pwMin.y);    
+    offsetScaleW = (wMax - wMin) / PVector.dist(pwMax, pwMin);    
     
   }
 
@@ -61,14 +61,14 @@ class Isopleth
   {
     if (moveU)
     {
-      u = u - offset * offsetScaleU;
+      u = u + offset * offsetScaleU;
       
       if (u<uMin) u = uMin;
       if (u>uMax) u = uMax;
     }
     else
     {
-      w = w - offset * offsetScaleW;
+      w = w + offset * offsetScaleW;
       
       if (w<wMin) w = wMin;
       if (w>wMax) w = wMax;
@@ -80,15 +80,19 @@ class Isopleth
   void doDraw(boolean moveU)
   {
     updateLine();
-    stroke(250,0,0);
-
+    
+    stroke(255,41,78);
+    strokeWeight(1.2);
     line(x1, y1, x3, y3);
     
     stroke(0);
-    fill(0);
-    ellipse(x1,y1,2,2);
-    ellipse(x2,y2,2,2);
-    ellipse(x3,y3,2,2);     
+    noFill();
+    int r = 8;
+    ellipse(x1,y1,r,r);
+    ellipse(x2,y2,r,r);
+    ellipse(x3,y3,r,r);     
+    
+    strokeWeight(1.0);
     
     if (moveU)
     {      
@@ -121,16 +125,23 @@ class Isopleth
     
     stroke(0);
     fill(0);
-    textSize(10);
+    textSize(16);
     textAlign(LEFT, BOTTOM);    
     
     String curentValues = "";
+    float  precision = 0.0;
     
-    curentValues += scales.scalesUVW.get(0).name + ":" + round(u*10.0)/10.0 + "[" +scales.scalesUVW.get(0).unit + "] ";
-    curentValues += scales.scalesUVW.get(1).name + ":" + round(v*10.0)/10.0 + "[" +scales.scalesUVW.get(1).unit + "] ";
-    curentValues += scales.scalesUVW.get(2).name + ":" + round(w*10.0)/10.0 + "[" +scales.scalesUVW.get(2).unit + "] ";
+    precision = pow(10, scales.scalesUVW.get(0).digits);
+    curentValues = scales.scalesUVW.get(0).name + ": " + round(u*precision)/precision + "[" +scales.scalesUVW.get(0).unit + "] ";
+    text(curentValues, 10 + width/3*0, height - 5); 
+    
+    precision = pow(10, scales.scalesUVW.get(1).digits);
+    curentValues = scales.scalesUVW.get(1).name + ": " + round(v*precision)/precision + "[" +scales.scalesUVW.get(1).unit + "] ";
+    text(curentValues, 10 + width/3*1, height - 5); 
 
-    text(curentValues, 10, height - 10); 
+    precision = pow(10, scales.scalesUVW.get(2).digits);
+    curentValues = scales.scalesUVW.get(2).name + ": " + round(w*precision)/precision + "[" +scales.scalesUVW.get(2).unit + "] ";
+    text(curentValues, 10 + width/3*2, height - 5); 
     
   }
 }
