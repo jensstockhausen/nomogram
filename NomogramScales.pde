@@ -91,10 +91,10 @@ class NomogramScales
         points.add(p);
       }
       
-      print("I " + i);
-      print(" U " + s.uMin + " " + s.uMax);
-      print(" X " + xMin + "-" +xMax);
-      println("| Y " + yMin + "-" +yMax);
+//      print("I " + i);
+//      print(" U " + s.uMin + " " + s.uMax);
+//      print(" X " + xMin + "-" +xMax);
+//      println("| Y " + yMin + "-" +yMax);
 
       pointsUVW.add(points);
 
@@ -146,7 +146,7 @@ class NomogramScales
       scale = (height - 2*border)/(yMax-yMin);
     }
     
-    println("Scale " + scale);
+   // println("Scale " + scale);
     
   }
 

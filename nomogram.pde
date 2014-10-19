@@ -14,17 +14,12 @@ void setup()
   yOffset = height/2;
   dragging = false;
   moveU = true;
+  
+  String lines[] = loadStrings("type.txt");
 
   nomogramCreator = new NomogamCreator();  
-  
-  /*
-  if (name == "earth_curve" ) return createEarthCurvature();
-  if (name == "ohms_law" )    return createOhmsLaw();
-  if (name == "bmi" )         return createBMI();
-  if (name == "resistors")    return cresteResists();
-  */
 
-  nomogram = nomogramCreator.create("resistors");
+  nomogram = nomogramCreator.create(lines[0]);
   
   isopleth = new Isopleth(nomogram);
 }
