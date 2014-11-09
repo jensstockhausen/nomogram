@@ -14,13 +14,20 @@ void setup()
   yOffset = height/2;
   dragging = false;
   moveU = true;
-  
-  String lines[] = loadStrings("type.txt");
 
   nomogramCreator = new NomogamCreator();  
-
-  nomogram = nomogramCreator.create(lines[0]);
   
+  // tries to load the configuration from file
+  String lines[] = loadStrings("type.txt");
+  
+  nomogram = nomogramCreator.create(lines[0]); 
+
+  if (nomogram == null)
+  {
+    // defaults to "ohms_law"
+    nomogram = nomogramCreator.create("ohms_law"); 
+  }
+   
   isopleth = new Isopleth(nomogram);
 }
 
@@ -31,6 +38,16 @@ void draw()
   nomogram.doDraw();
   isopleth.doDraw(moveU);  
 }
+
+
+void keyPressed() 
+{
+  if (key == 't') 
+  {
+    moveU = !moveU;
+  } 
+}
+
 
 void mousePressed()
 {
@@ -57,6 +74,10 @@ void mouseMoved(MouseEvent mEvent)
     yOffset = mouseY;
   }
 }
+
+/*
+* scales are parallel
+*/
 
 class ConcurrentScale extends Determinant
 {
@@ -145,6 +166,12 @@ class Determinant
   } 
 }
 
+
+/*
+* scales are N shaped
+*/
+
+
 class NScale extends Determinant
 {
   NScale(Func fu, Func fv, Func fw, Func invFv)
@@ -189,6 +216,11 @@ class NScale extends Determinant
   }
   
 }
+
+/*
+* scales are parallel
+*/
+
 
 class ParallelScale extends Determinant
 {
@@ -382,6 +414,10 @@ class Isopleth
   }
 }
 
+/*
+* factory class to create the different nomograms
+*/
+
 class NomogamCreator
 {
   NomogamCreator(){}
@@ -439,7 +475,7 @@ class NomogamCreator
     float mu2   = 0.9;
     float mu3   = 1.5;
    
-    return new NomogramScales("Ohm's Law (U=R*I)", scales, det, delta, mu1, mu2, mu3, 60);
+    return new NomogramScales("Ohm's Law (U=RxI)", scales, det, delta, mu1, mu2, mu3, 60);
   }
   
   

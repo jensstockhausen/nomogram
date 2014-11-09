@@ -1,1 +1,1 @@
-resistors
+earth_curve
