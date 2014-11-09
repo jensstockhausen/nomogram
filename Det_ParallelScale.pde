@@ -1,4 +1,9 @@
 
+/*
+* scales are parallel
+*/
+
+
 class ParallelScale extends Determinant
 {
   ParallelScale(Func fu, Func fv, Func fw, Func invFv)

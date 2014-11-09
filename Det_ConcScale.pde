@@ -1,4 +1,8 @@
 
+/*
+* scales are parallel
+*/
+
 class ConcurrentScale extends Determinant
 {
   ConcurrentScale(Func fu, Func fv, Func fw, Func invFv)

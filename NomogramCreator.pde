@@ -1,4 +1,8 @@
 
+/*
+* factory class to create the different nomograms
+*/
+
 class NomogamCreator
 {
   NomogamCreator(){}
@@ -56,7 +60,7 @@ class NomogamCreator
     float mu2   = 0.9;
     float mu3   = 1.5;
    
-    return new NomogramScales("Ohm's Law (U=R*I)", scales, det, delta, mu1, mu2, mu3, 60);
+    return new NomogramScales("Ohm's Law (U=RxI)", scales, det, delta, mu1, mu2, mu3, 60);
   }
   
   

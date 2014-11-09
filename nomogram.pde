@@ -14,13 +14,20 @@ void setup()
   yOffset = height/2;
   dragging = false;
   moveU = true;
-  
-  String lines[] = loadStrings("type.txt");
 
   nomogramCreator = new NomogamCreator();  
-
-  nomogram = nomogramCreator.create(lines[0]);
   
+  // tries to load the configuration from file
+  String lines[] = loadStrings("type.txt");
+  
+  nomogram = nomogramCreator.create(lines[0]); 
+
+  if (nomogram == null)
+  {
+    // defaults to "ohms_law"
+    nomogram = nomogramCreator.create("ohms_law"); 
+  }
+   
   isopleth = new Isopleth(nomogram);
 }
 
@@ -31,6 +38,16 @@ void draw()
   nomogram.doDraw();
   isopleth.doDraw(moveU);  
 }
+
+
+void keyPressed() 
+{
+  if (key == 't') 
+  {
+    moveU = !moveU;
+  } 
+}
+
 
 void mousePressed()
 {

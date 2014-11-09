@@ -1,4 +1,10 @@
 
+
+/*
+* scales are N shaped
+*/
+
+
 class NScale extends Determinant
 {
   NScale(Func fu, Func fv, Func fw, Func invFv)
